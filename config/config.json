@@ -9,10 +9,20 @@
           "manifest": "./src/webparts/multi/MultiWebPart.manifest.json"
         }
       ]
+    },
+
+    "p-016-site-properties-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/p016SiteProperties/P016SitePropertiesWebPart.js",
+          "manifest": "./src/webparts/p016SiteProperties/P016SitePropertiesWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "MultiWebPartStrings": "lib/webparts/multi/loc/{locale}.js"
+    "MultiWebPartStrings": "lib/webparts/multi/loc/{locale}.js",
+    "P016SitePropertiesWebPartStrings": "lib/webparts/p016SiteProperties/loc/{locale}.js"
   }
 }
