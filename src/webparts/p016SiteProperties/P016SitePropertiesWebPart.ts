@@ -1,4 +1,4 @@
-import { Version } from '@microsoft/sp-core-library';
+import { Environment, EnvironmentType, Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
@@ -9,11 +9,69 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './P016SitePropertiesWebPart.module.scss';
 import * as strings from 'P016SitePropertiesWebPartStrings';
 
+// P019 SharePoint Lists name
+import {
+  SPHttpClient,
+  SPHttpClientConfiguration,
+  SPHttpClientResponse
+} from '@microsoft/sp-http'
+
+export interface ISharePointList {
+  Title: string;
+  Id: string;
+}
+export interface ISharePointLists {
+  value: ISharePointList[];
+}
 export interface IP016SitePropertiesWebPartProps {
   description: string;
 }
+// /////////////////////////////////////////////////////
+
+
+
+
+
 
 export default class P016SitePropertiesWebPart extends BaseClientSideWebPart<IP016SitePropertiesWebPartProps> {
+
+
+// P019 SharePoint Lists name
+private _getListOfLists(): Promise<ISharePointLists> {
+  return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl +`/_api/web/lists?$filter=Hidden eq false`,SPHttpClient.configurations.v1)
+  .then((response: SPHttpClientResponse) => {
+    return response.json();
+  });
+}
+private _getAndRenderLists(): void {
+  if(Environment.type === EnvironmentType.Local) {
+
+  }
+  else if (Environment.type == EnvironmentType.SharePoint ||
+    Environment.type == EnvironmentType.ClassicSharePoint) {
+      this._getListOfLists()
+      .then((response) => {
+        this._renderListOfLists(response.value);
+      });
+    }
+}
+private _renderListOfLists(items: ISharePointList[]): void {
+  let html: string = '';
+  items.forEach((item: ISharePointList) => {
+    html += `
+    <ul class="${styles.list}">
+                <li class="${styles.listItem}">
+                <span class="ms-font-l">${item.Title}</span>
+                </li>
+                <li class="${styles.listItem}">
+                <span class="ms-font-l">${item.Id}</span>
+                </li>
+            </ul>`;
+  });
+  const listsPlaceholder: Element = this.domElement.querySelector('#SPListPlaceHolder');
+  listsPlaceholder.innerHTML =html;
+}
+
 
   public render(): void {
     this.domElement.innerHTML = `
@@ -27,7 +85,7 @@ export default class P016SitePropertiesWebPart extends BaseClientSideWebPart<IP0
 
 
 
-              // ///////////////////////////////// P017 site info/properties
+// ///////////////////////////////// P017 site info/properties
               <p class="${ styles.description }">${escape(this.context.pageContext.web.absoluteUrl)}</p>
               <p class="${ styles.description }">${escape(this.context.pageContext.web.title)}</p>
               <p class="${ styles.description }">${escape(this.context.pageContext.web.serverRelativeUrl)}</p>
@@ -36,12 +94,15 @@ export default class P016SitePropertiesWebPart extends BaseClientSideWebPart<IP0
 
 
 
-              //////////////////////////////////// P018 CULTUR InFo
+// ////////////////////////////////// P018 CULTURE InFo
               <ul>
                   <li><strong>Current Culture Name</strong>: ${escape(this.context.pageContext.cultureInfo.currentCultureName)}</li>
                   <li><strong>Current UI Culture Name</strong>: ${escape(this.context.pageContext.cultureInfo.currentUICultureName)}</li>
                   <li><strong>isRightToLeft?</strong>: ${this.context.pageContext.cultureInfo.isRightToLeft}</li>
               </ul>
+
+
+//
 
 
               <a href="https://aka.ms/spfx" class="${ styles.button }">
@@ -50,12 +111,15 @@ export default class P016SitePropertiesWebPart extends BaseClientSideWebPart<IP0
             </div>
           </div>
         </div>
+        <div id="SPListPlaceHolder">
+          </div>
       </div>`;
+      this._getAndRenderLists();
   }
 
-  protected get dataVersion(): Version {
-    return Version.parse('1.0');
-  }
+  // protected get dataVersion(): Version {
+  //   return Version.parse('1.0');
+  // }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
