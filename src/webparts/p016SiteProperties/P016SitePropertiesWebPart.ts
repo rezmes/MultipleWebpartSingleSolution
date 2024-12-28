@@ -25,10 +25,23 @@ export default class P016SitePropertiesWebPart extends BaseClientSideWebPart<IP0
               <p class="${ styles.subTitle }">Customize SharePoint experiences using Web Parts.</p>
               <p class="${ styles.description }">${escape(this.properties.description)}</p>
 
+
+
+              // ///////////////////////////////// P017 site info/properties
               <p class="${ styles.description }">${escape(this.context.pageContext.web.absoluteUrl)}</p>
-                            <p class="${ styles.description }">${escape(this.context.pageContext.web.title)}</p>
-                                          <p class="${ styles.description }">${escape(this.context.pageContext.web.serverRelativeUrl)}</p>
-                                                        <p class="${ styles.description }">${escape(this.context.pageContext.user.displayName)}</p>
+              <p class="${ styles.description }">${escape(this.context.pageContext.web.title)}</p>
+              <p class="${ styles.description }">${escape(this.context.pageContext.web.serverRelativeUrl)}</p>
+              <p class="${ styles.description }">${escape(this.context.pageContext.user.displayName)}</p>
+
+
+
+
+              //////////////////////////////////// P018 CULTUR InFo
+              <ul>
+                  <li><strong>Current Culture Name</strong>: ${escape(this.context.pageContext.cultureInfo.currentCultureName)}</li>
+                  <li><strong>Current UI Culture Name</strong>: ${escape(this.context.pageContext.cultureInfo.currentUICultureName)}</li>
+                  <li><strong>isRightToLeft?</strong>: ${this.context.pageContext.cultureInfo.isRightToLeft}</li>
+              </ul>
 
 
               <a href="https://aka.ms/spfx" class="${ styles.button }">
