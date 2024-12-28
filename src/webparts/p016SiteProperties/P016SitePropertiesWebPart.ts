@@ -25,6 +25,15 @@ export interface ISharePointLists {
 }
 export interface IP016SitePropertiesWebPartProps {
   description: string;
+
+  // P21 Textboxes
+  productname: string;
+  productdescription: string;
+  productcost: number;
+  quantity: number;
+  billamount: number;
+  discount: number;
+  netbillamount: number;
 }
 // /////////////////////////////////////////////////////
 
@@ -82,8 +91,33 @@ private _renderListOfLists(items: ISharePointList[]): void {
               <span class="${ styles.title }">Welcome to SharePoint!</span>
               <p class="${ styles.subTitle }">Customize SharePoint experiences using Web Parts.</p>
               <p class="${ styles.description }">${escape(this.properties.description)}</p>
+// ////////////////////////////////////P021 TextBoxes
+<table>
+    <tr>
+        <td>Product Name</td>
+        <td>${this.properties.productname}</td>
+    </tr>
+
+    <tr>
+        <td>product description</td>
+        <td>${this.properties.productdescription}</td>
+    </tr>
+
+    <tr>
+        <td>Product Cost</td>
+        <td>${this.properties.productcost}</td>
+    </tr>
+
+    <tr>
+        <td>Product Quantity</td>
+        <td>${this.properties.quantity}</td>
+    </tr>
 
 
+
+
+
+</table>
 
 // ///////////////////////////////// P017 site info/properties
               <p class="${ styles.description }">${escape(this.context.pageContext.web.absoluteUrl)}</p>
@@ -121,25 +155,86 @@ private _renderListOfLists(items: ISharePointList[]): void {
   //   return Version.parse('1.0');
   // }
 
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    return {
-      pages: [
-        {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
-          groups: [
-            {
-              groupName: strings.BasicGroupName,
+  // protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  //   return {
+  //     pages: [
+  //       {
+  //         header: {
+  //           description: strings.PropertyPaneDescription
+  //         },
+  //         groups: [
+  //           {
+  //             groupName: strings.BasicGroupName,
+  //             groupFields: [
+  //               PropertyPaneTextField('description', {
+  //                 label: strings.DescriptionFieldLabel
+  //               })
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   };
+  // }
+
+
+
+
+// P21 Working with TextBoxes
+
+protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  return {
+    pages:[
+      {
+        groups: [
+          {
+            groupName: "Product Details",
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
+
+                PropertyPaneTextField('productname', {
+                  label: "Product Name",
+                  multiline: false,
+                  resizable: false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter product name", "description": " Name of property field"
+                }),
+
+                PropertyPaneTextField('productdescription', {
+                  label: "Product Description",
+                  multiline: true,
+                  resizable:false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter Product Description", "description": "Name property field"
+                }),
+
+                PropertyPaneTextField('productcost', {
+                  label: "Product cost",
+                  multiline: false,
+                  resizable:false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter Product Cost", "description": "Number property field"
+                }),
+
+                PropertyPaneTextField('Quantity', {
+                  label: "Product Quantity",
+                  multiline: false,
+                  resizable:false,
+                  deferredValidationTime: 5000,
+                  placeholder: "Please enter Product Quantity", "description": "Number property field"
+                }),
+
+
               ]
-            }
-          ]
-        }
-      ]
-    };
+
+
+
+          }
+        ]
+      }
+    ]
+
+    }
   }
 }
+
+
