@@ -51,7 +51,7 @@ protected onInit(): Promise<void> {
     this.properties.productdescription= "string";
     this.properties.productcost= 300;
     this.properties.quantity= 3;
-
+    resolve(undefined)
   })
 }
 
@@ -129,6 +129,19 @@ private _renderListOfLists(items: ISharePointList[]): void {
         <td>${this.properties.quantity}</td>
     </tr>
 
+    <tr>
+        <td>Total Price</td>
+        <td>${this.properties.billamount = this.properties.quantity * this.properties.productcost }</td>
+    </tr>
+
+    <tr>
+        <td>Discount</td>
+        <td>${this.properties.discount = this.properties.billamount * 0.1 }</td>
+    </tr>
+    <tr>
+        <td>Net Price</td>
+        <td>${this.properties.netbillamount = this.properties.billamount - this.properties.discount }</td>
+    </tr>
 
 
 
@@ -149,7 +162,7 @@ private _renderListOfLists(items: ISharePointList[]): void {
                   <li><strong>Current Culture Name</strong>: ${escape(this.context.pageContext.cultureInfo.currentCultureName)}</li>
                   <li><strong>Current UI Culture Name</strong>: ${escape(this.context.pageContext.cultureInfo.currentUICultureName)}</li>
                   <li><strong>isRightToLeft?</strong>: ${this.context.pageContext.cultureInfo.isRightToLeft}</li>
-              </ul>
+             </ul>
 
 
 //
