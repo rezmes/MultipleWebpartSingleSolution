@@ -26,7 +26,7 @@ export interface ISharePointLists {
 export interface IP016SitePropertiesWebPartProps {
   description: string;
 
-  // P21 Textboxes
+  // ///////////////////////////////////////////////P021 Textboxes
   productname: string;
   productdescription: string;
   productcost: number;
@@ -43,6 +43,22 @@ export interface IP016SitePropertiesWebPartProps {
 
 
 export default class P016SitePropertiesWebPart extends BaseClientSideWebPart<IP016SitePropertiesWebPartProps> {
+// ///////////////////////////////////////P023 Working with onInit Function
+
+protected onInit(): Promise<void> {
+  return new Promise<void>((resolve, _reject) => {
+    this.properties.productname= "string";
+    this.properties.productdescription= "string";
+    this.properties.productcost= 300;
+    this.properties.quantity= 3;
+
+  })
+}
+
+// ///////////////////////////////////////P024 Disabling Reactive Change
+protected get disableReactivePropertyChanges(): boolean {
+  return true;
+}
 
 
 // P019 SharePoint Lists name
